@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PNG to JPG Converter</title>
+  </head>
+  <body>
+    <input type="file" id="inputImage" accept="image/png" />
+    <a id="downloadLink" download="converted.jpg" style="display: none"
+      >Download JPG</a
+    >
+
+    <script>
+      const inputImage = document.getElementById("inputImage");
+      const downloadLink = document.getElementById("downloadLink");
+
+      inputImage.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === "image/png") {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const image = new Image();
+            image.src = event.target.result;
+            image.onload = () => {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              canvas.width = image.width;
+              canvas.height = image.height;
+              ctx.drawImage(image, 0, 0);
+              const jpgDataUrl = canvas.toDataURL("image/jpeg", 0.92);
+              downloadLink.href = jpgDataUrl;
+              downloadLink.style.display = "block";
+            };
+          };
+          reader.readAsDataURL(file);
+        } else {
+          alert("Please upload a valid PNG image.");
+        }
+      });
+    </script>
+  </body>
+</html>
