@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from "react";
+import * as path from "path";
 
 const ImageConverter: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -17,25 +18,15 @@ const ImageConverter: React.FC = () => {
       alert("Please upload a valid image file.");
     }
 
-    console.log("event.target.files?.[0].name", event.target.files?.[0].name);
     setSelectedFileName(event.target.files?.[0].name || "");
   };
-
-  function getFileNameWithoutExtension(fileName: string): string {
-    const lastDotIndex = fileName.lastIndexOf(".");
-    if (lastDotIndex === -1) {
-      return fileName;
-    }
-    return fileName.slice(0, lastDotIndex);
-  }
 
   const handleFormatChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedFormat(event.target.value);
   };
 
   const handleDownload = () => {
-    const fileNameWithoutExtension =
-      getFileNameWithoutExtension(selectedFileName);
+    const fileNameWithoutExtension = path.parse(selectedFileName).name;
 
     if (imageSrc) {
       const image = new Image();
