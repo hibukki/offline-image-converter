@@ -1,5 +1,8 @@
 import React, { useState, ChangeEvent } from "react";
-import * as path from "path";
+
+function getFileNameWithoutExtension(fileName: string) {
+  return fileName.split(".").slice(0, -1).join(".");
+}
 
 const ImageConverter: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -26,7 +29,9 @@ const ImageConverter: React.FC = () => {
   };
 
   const handleDownload = () => {
-    const fileNameWithoutExtension = path.parse(selectedFileName).name;
+    // print("selectedFileName: " + selectedFileName);
+    const fileNameWithoutExtension =
+      getFileNameWithoutExtension(selectedFileName);
 
     if (imageSrc) {
       const image = new Image();
